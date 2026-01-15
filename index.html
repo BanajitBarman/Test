@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>For You ❤️</title>
+
   <style>
     body {
       margin: 0;
@@ -16,50 +17,71 @@
       min-height: 100vh;
       color: #333;
     }
+
     .card {
       background: white;
+      width: 100%;
       max-width: 600px;
       padding: 30px 35px;
+      margin: 20px; /* ✅ ensures pink background is visible on mobile */
       border-radius: 20px;
       box-shadow: 0 20px 40px rgba(0,0,0,0.15);
       text-align: center;
       animation: fadeIn 2s ease;
     }
+
     h1 {
       color: #ff4d6d;
       font-size: 2.4rem;
       margin-bottom: 10px;
     }
+
     h2 {
       font-weight: normal;
       font-size: 1.2rem;
       margin-bottom: 25px;
     }
+
     p {
       font-size: 1.05rem;
       line-height: 1.7;
       margin-bottom: 15px;
     }
+
     .heart {
       font-size: 3rem;
       animation: beat 1.5s infinite;
       margin: 20px 0;
     }
+
     .footer {
       margin-top: 25px;
       font-size: 0.95rem;
       color: #666;
     }
+
     @keyframes beat {
       0%, 100% { transform: scale(1); }
       50% { transform: scale(1.2); }
     }
+
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
+
+    /* 📱 Extra polish for small screens */
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 2rem;
+      }
+      p {
+        font-size: 1rem;
+      }
+    }
   </style>
 </head>
+
 <body>
   <div class="card">
     <h1>Hey Himashree ❤️</h1>
