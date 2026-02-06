@@ -28,12 +28,12 @@ h2{font-size:1.3rem;margin:10px 0;}
 }
 .image-box img{
  width:100%;height:100%;object-fit:cover;
- filter:blur(12px);opacity:0;transition:1.2s ease;
+ filter:blur(14px);opacity:0;transition:1.2s ease;
 }
 .image-box.revealed img{filter:blur(0);opacity:1;}
 
 .tap-overlay{
- position:absolute;inset:0;background:rgba(255,255,255,.85);
+ position:absolute;inset:0;background:rgba(255,255,255,.9);
  display:flex;align-items:center;justify-content:center;
  font-weight:600;color:#ff4d6d;
 }
@@ -58,6 +58,7 @@ button{
  box-shadow:0 10px 25px rgba(0,0,0,.15);font-size:1.3rem;cursor:pointer;
 }
 
+/* Letter */
 #letter{
  position:fixed;inset:0;background:rgba(255,240,245,.97);
  display:none;align-items:center;justify-content:center;z-index:100;
@@ -66,6 +67,16 @@ button{
  background:white;padding:30px;border-radius:25px;max-width:420px;
  font-family:'Dancing Script',cursive;font-size:1.6rem;color:#d63384;
  text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.2);
+}
+
+/* Fireworks */
+.firework{
+ position:fixed;font-size:22px;pointer-events:none;
+ animation:explode 1.8s ease-out forwards;z-index:999;
+}
+@keyframes explode{
+ 0%{transform:scale(0);opacity:1;}
+ 100%{transform:scale(1.6) translate(var(--x),var(--y));opacity:0;}
 }
 </style>
 </head>
@@ -100,73 +111,102 @@ button{
 </div>
 
 <script>
-const titleEl = document.getElementById("title");
-const imgEl = document.getElementById("img");
-const msgEl = document.getElementById("msg");
-const lyricEl = document.getElementById("lyric");
-const tapEl = document.getElementById("tap");
-const imgBox = document.getElementById("imgBox");
-const letter = document.getElementById("letter");
-const letterText = document.getElementById("letterText");
-const music = document.getElementById("music");
+const titleEl=document.getElementById("title");
+const imgEl=document.getElementById("img");
+const msgEl=document.getElementById("msg");
+const lyricEl=document.getElementById("lyric");
+const tapEl=document.getElementById("tap");
+const imgBox=document.getElementById("imgBox");
+const letter=document.getElementById("letter");
+const letterText=document.getElementById("letterText");
+const music=document.getElementById("music");
 
-const startDate = new Date("2026-02-07T00:00:00");
-const today = new Date();
+/* 🔒 DATE LOCK LOGIC */
+const startDate=new Date(2026,1,7); // Feb 7, 2026
+const today=new Date();
+today.setHours(0,0,0,0);
+startDate.setHours(0,0,0,0);
 
-const diffDays = Math.floor((today - startDate)/(1000*60*60*24));
-const unlocked = Math.max(0, Math.min(7, diffDays));
+const diffDays=Math.floor((today-startDate)/(1000*60*60*24));
+const unlocked=Math.max(-1,Math.min(7,diffDays));
 
-const days = [
- {t:"🌹 Rose Day",m:"Like a rose, my love blooms quietly for you.",l:"This night is sparkling.",img:"rose.jpg",song:"rose.mp3",letter:"এপাহ সতেজ গোলাপৰ দৰেই তোমাৰ উপস্থিতিয়ে মোৰ পৃথিৱীখন সুবাসিত কৰি ৰাখে। May our journey together continue to blossom in the most beautiful ways. Happy Rose Day 💐"},
- {t:"💍 Propose Day",m:"My heart chooses you — always.",l:"Can I go where you go?",img:"propose.jpg",song:"propose.mp3",letter:"I choose you ❤️"},
- {t:"🍫 Chocolate Day",m:"You make life sweeter.",l:"Sweet nothing.",img:"chocolate.jpg",song:"chocolate.mp3",letter:"Sweet like you 🍫"},
- {t:"🧸 Teddy Day",m:"Sending you my warmest hug.",l:"In the silence.",img:"teddy.jpg",song:"teddy.mp3",letter:"A hug for you 🧸"},
- {t:"🤞 Promise Day",m:"I promise to stand by you.",l:"It’s golden.",img:"promise.jpg",song:"promise.mp3",letter:"মই প্ৰতিশ্ৰুতি দিছোঁ যে সুখতে হওক বা দুখতে, জীৱনৰ প্ৰতিটো খোজত তোমাৰ হাতখন ধৰি মই সদায় কাষত থাকিম।"},
- {t:"🤗 Hug Day",m:"My favorite place is with you.",l:"Laughing with my lover.",img:"hug.jpg",song:"hug.mp3",letter:"Come here 🤗"},
- {t:"💋 Kiss Day",m:"One kiss says it all.",l:"Everything just stops.",img:"kiss.jpg",song:"kiss.mp3",letter:"Just one kiss 💋"},
- {t:"❤️ Valentine’s Day",m:"You are my forever.",l:"Baby just say yes.",img:"valentine.jpg",song:"valentine.mp3",letter:"Himashree, you are my forever, my love, my home. — Banajit 💖"}
+const days=[
+{t:"🌹 Rose Day",m:"Like a rose, my love blooms quietly for you.",l:"This night is sparkling.",img:"rose.jpg",song:"rose.mp3",letter:"এপাহ সতেজ গোলাপৰ দৰেই তোমাৰ উপস্থিতিয়ে মোৰ পৃথিৱীখন সুবাসিত কৰি ৰাখে।"},
+{t:"💍 Propose Day",m:"My heart chooses you — always.",l:"Can I go where you go?",img:"propose.jpg",song:"propose.mp3",letter:"I choose you. Every single day."},
+{t:"🍫 Chocolate Day",m:"You make life sweeter.",l:"Sweet nothing.",img:"chocolate.jpg",song:"chocolate.mp3",letter:"You are my favorite sweetness."},
+{t:"🧸 Teddy Day",m:"Sending you my warmest hug.",l:"In the silence.",img:"teddy.jpg",song:"teddy.mp3",letter:"Imagine me hugging you tight."},
+{t:"🤞 Promise Day",m:"I promise to stand by you.",l:"It’s golden.",img:"promise.jpg",song:"promise.mp3",letter:"মই সদায় তোমাৰ কাষত থাকিম।"},
+{t:"🤗 Hug Day",m:"My favorite place is with you.",l:"Laughing with my lover.",img:"hug.jpg",song:"hug.mp3",letter:"Come here… this hug is for you."},
+{t:"💋 Kiss Day",m:"One kiss says it all.",l:"Everything just stops.",img:"kiss.jpg",song:"kiss.mp3",letter:"One kiss, endless feelings."},
+{t:"❤️ Valentine’s Day",m:"You are my forever.",l:"Baby just say yes.",img:"valentine.jpg",song:"valentine.mp3",letter:"Himashree, you are my forever. — Banajit 💖"}
 ];
 
-let i = Math.min(unlocked, days.length-1);
+let i=Math.max(0,unlocked);
 
 function load(){
- const d = days[i];
- titleEl.innerText = d.t;
- imgEl.src = d.img;
- msgEl.innerText = "";
- lyricEl.innerText = d.l;
- letterText.innerHTML = d.letter;
+ const d=days[i];
+ titleEl.innerText=d.t;
+ imgEl.src=d.img;
+ msgEl.innerText="";
+ lyricEl.innerText=d.l;
+ letterText.innerHTML=d.letter;
  imgBox.classList.remove("revealed");
- tapEl.innerText = i > unlocked ? "Locked 🔒 Come back tomorrow" : "Tap to unlock 💖";
- music.src = d.song;
  lyricEl.parentElement.classList.remove("show");
+ tapEl.innerText=i>unlocked?"Locked 🔒 Come back tomorrow":"Tap to unlock 💖";
+ music.src=d.song;
 }
 
 function reveal(){
- if(i > unlocked) return;
+ if(i>unlocked)return;
  imgBox.classList.add("revealed");
  typeText(days[i].m);
- music.play();
+ music.play().catch(()=>{});
  lyricEl.parentElement.classList.add("show");
+ if(i===7)fireworks();
 }
 
 function typeText(text){
- let j=0; msgEl.innerText="";
- const timer=setInterval(()=>{
-   if(j<text.length) msgEl.innerText+=text[j++];
-   else clearInterval(timer);
+ let j=0;msgEl.innerText="";
+ const t=setInterval(()=>{
+  if(j<text.length)msgEl.innerText+=text[j++];
+  else clearInterval(t);
  },45);
 }
 
 function move(d){
- const next=i+d;
- if(next<0||next>=days.length) return;
- i=next; load();
+ const n=i+d;
+ if(n<0||n>=days.length)return;
+ i=n;load();
 }
 
 function toggleMusic(){music.paused?music.play():music.pause();}
-function openLetter(){letter.style.display="flex";}
+
+function openLetter(){
+ if(i > unlocked){
+   letterText.innerHTML = "🔒 This letter is still sealed.<br><br>Come back tomorrow, my love 💕";
+   letter.style.display = "flex";
+   return;
+ }
+ letterText.innerHTML = days[i].letter;
+ letter.style.display = "flex";
+}
 function closeLetter(){letter.style.display="none";}
+
+/* 🎆 FIREWORKS */
+function fireworks(){
+ const emojis=["💖","✨","❤️","💘","🎆"];
+ for(let k=0;k<30;k++){
+  const e=document.createElement("div");
+  e.className="firework";
+  e.innerText=emojis[Math.floor(Math.random()*emojis.length)];
+  e.style.left=Math.random()*100+"vw";
+  e.style.top=Math.random()*100+"vh";
+  e.style.setProperty("--x",(Math.random()*200-100)+"px");
+  e.style.setProperty("--y",(Math.random()*200-100)+"px");
+  document.body.appendChild(e);
+  setTimeout(()=>e.remove(),1800);
+ }
+}
 
 load();
 </script>
