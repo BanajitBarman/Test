@@ -17,19 +17,6 @@ body {
   overflow-x: hidden;
 }
 
-/* Floating hearts */
-.heart-float {
-  position: fixed;
-  bottom: -20px;
-  font-size: 20px;
-  animation: floatUp 6s linear infinite;
-  opacity: 0.7;
-}
-@keyframes floatUp {
-  from { transform: translateY(0); opacity: 1; }
-  to { transform: translateY(-110vh); opacity: 0; }
-}
-
 .card {
   background: white;
   width: 100%;
@@ -39,12 +26,10 @@ body {
   border-radius: 20px;
   text-align: center;
   box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-  animation: fadeIn 1.5s ease;
 }
 
 h1 {
   color: #ff4d6d;
-  margin-bottom: 10px;
 }
 
 .day {
@@ -55,137 +40,187 @@ h1 {
   display: block;
 }
 
+.locked {
+  opacity: 0.6;
+}
+
 button {
   background: #ff4d6d;
   border: none;
   color: white;
-  padding: 10px 20px;
+  padding: 10px 22px;
   border-radius: 25px;
   cursor: pointer;
   font-size: 1rem;
-  margin-top: 15px;
+  margin-top: 20px;
 }
 
-button:hover {
-  background: #e63956;
+button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
 }
 
 .secret {
   display: none;
   margin-top: 15px;
   font-size: 1.1rem;
-  color: #444;
 }
 
-.music-btn {
-  margin-bottom: 15px;
-  background: #ff85a2;
+.heart-float {
+  position: fixed;
+  bottom: -20px;
+  animation: floatUp 6s linear infinite;
+  opacity: 0.7;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+@keyframes floatUp {
+  from { transform: translateY(0); }
+  to { transform: translateY(-110vh); opacity: 0; }
 }
 </style>
 </head>
 
 <body>
 
-<!-- Background Music -->
-<audio id="music" loop>
-  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+<!-- Romantic background music -->
+<audio id="music" autoplay muted loop>
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" type="audio/mpeg">
 </audio>
 
-<div class="card">
-  <button class="music-btn" onclick="playMusic()">🎵 Tap to Play Music</button>
-
+<div class="card" onclick="unmuteMusic()">
   <h1>Valentine Week 💖</h1>
 
-  <!-- DAY 1 -->
-  <div class="day active">
+  <!-- Day 1 -->
+  <div class="day" data-day="0">
     <h2>🌹 Rose Day</h2>
-    <p>Just like this rose, my feelings for you are pure and beautiful.</p>
+    <p>
+      Just like a rose, my feelings for you are soft, deep, and full of love.
+      Every petal reminds me of your smile.
+    </p>
   </div>
 
-  <!-- DAY 2 -->
-  <div class="day">
+  <!-- Day 2 -->
+  <div class="day" data-day="1">
     <h2>💍 Propose Day</h2>
-    <p>If I had to choose again, I’d still choose you every single time.</p>
+    <p>
+      I don’t need fancy words — my heart chose you quietly,
+      and it keeps choosing you every single day.
+    </p>
   </div>
 
-  <!-- DAY 3 -->
-  <div class="day">
+  <!-- Day 3 -->
+  <div class="day" data-day="2">
     <h2>🍫 Chocolate Day</h2>
-    <p>Life feels sweeter with you in it.</p>
+    <p>
+      Life with you feels sweeter than any chocolate.
+      You are my favorite addiction.
+    </p>
   </div>
 
-  <!-- DAY 4 -->
-  <div class="day">
+  <!-- Day 4 -->
+  <div class="day" data-day="3">
     <h2>🧸 Teddy Day</h2>
-    <p>I wish I could hug you right now.</p>
+    <p>
+      When I miss you, I wish I could hold you tight
+      and forget the rest of the world.
+    </p>
   </div>
 
-  <!-- DAY 5 -->
-  <div class="day">
+  <!-- Day 5 -->
+  <div class="day" data-day="4">
     <h2>🤞 Promise Day</h2>
-    <p>I promise to stand by you, always.</p>
+    <p>
+      I promise to respect you, care for you,
+      and stand beside you — always.
+    </p>
   </div>
 
-  <!-- DAY 6 -->
-  <div class="day">
+  <!-- Day 6 -->
+  <div class="day" data-day="5">
     <h2>🤗 Hug Day</h2>
-    <p>This hug is invisible, but my feelings are real.</p>
+    <p>
+      This hug crosses distance and time,
+      carrying all my warmth to you.
+    </p>
   </div>
 
-  <!-- DAY 7 -->
-  <div class="day">
+  <!-- Day 7 -->
+  <div class="day" data-day="6">
     <h2>💋 Kiss Day</h2>
-    <p>A kiss to seal all my love for you.</p>
+    <p>
+      A kiss may last a moment,
+      but my love for you is endless.
+    </p>
   </div>
 
-  <!-- FINAL -->
-  <div class="day">
+  <!-- Valentine’s Day -->
+  <div class="day" data-day="7">
     <h2>❤️ Valentine’s Day</h2>
-    <p>You are my today, my tomorrow, my always.</p>
+    <p>
+      You are my favorite story,
+      my safest place, my forever.
+    </p>
 
     <button onclick="reveal()">🔐 Reveal My Secret</button>
     <div class="secret" id="secret">
-      Himashree, I love you more than words can ever say.  
+      Himashree, loving you is the best thing my heart has ever done.  
       — Banajit 💖
     </div>
   </div>
 
-  <button onclick="nextDay()">Next ➜</button>
+  <button id="nextBtn" onclick="nextDay()">Next ➜</button>
 </div>
 
 <script>
-let current = 0;
 const days = document.querySelectorAll('.day');
+let current = 0;
 
-function nextDay() {
-  days[current].classList.remove('active');
-  current = (current + 1) % days.length;
-  days[current].classList.add('active');
+/* Set Valentine week start date (Rose Day) */
+const startDate = new Date('2026-02-07T00:00:00'); // adjust year if needed
+const today = new Date();
+const diffDays = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
+
+function updateDay() {
+  current = Math.max(0, Math.min(diffDays, days.length - 1));
+  days.forEach((d, i) => d.classList.toggle('active', i === current));
+
+  if (diffDays < days.length - 1) {
+    document.getElementById('nextBtn').disabled = true;
+    document.getElementById('nextBtn').innerText = "🔐 Unlocks at 12:00 AM";
+  }
 }
 
-function playMusic() {
-  document.getElementById('music').play();
+function nextDay() {
+  if (current < days.length - 1) {
+    days[current].classList.remove('active');
+    current++;
+    days[current].classList.add('active');
+  }
 }
 
 function reveal() {
   document.getElementById('secret').style.display = 'block';
 }
 
+/* Mobile autoplay fix */
+function unmuteMusic() {
+  const music = document.getElementById('music');
+  music.muted = false;
+  music.play();
+}
+
 /* Floating hearts */
 setInterval(() => {
-  const heart = document.createElement('div');
-  heart.className = 'heart-float';
-  heart.innerHTML = '💖';
-  heart.style.left = Math.random() * 100 + 'vw';
-  heart.style.fontSize = (20 + Math.random() * 20) + 'px';
-  document.body.appendChild(heart);
-  setTimeout(() => heart.remove(), 6000);
+  const h = document.createElement('div');
+  h.className = 'heart-float';
+  h.innerHTML = '💖';
+  h.style.left = Math.random() * 100 + 'vw';
+  h.style.fontSize = (20 + Math.random() * 20) + 'px';
+  document.body.appendChild(h);
+  setTimeout(() => h.remove(), 6000);
 }, 500);
+
+updateDay();
 </script>
 
 </body>
