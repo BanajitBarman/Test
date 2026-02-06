@@ -1,117 +1,192 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>For You ❤️</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valentine Week ❤️</title>
 
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      color: #333;
-    }
+<style>
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-x: hidden;
+}
 
-    .card {
-      background: white;
-      width: 100%;
-      max-width: 600px;
-      padding: 30px 35px;
-      margin: 20px; /* ✅ ensures pink background is visible on mobile */
-      border-radius: 20px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-      text-align: center;
-      animation: fadeIn 2s ease;
-    }
+/* Floating hearts */
+.heart-float {
+  position: fixed;
+  bottom: -20px;
+  font-size: 20px;
+  animation: floatUp 6s linear infinite;
+  opacity: 0.7;
+}
+@keyframes floatUp {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(-110vh); opacity: 0; }
+}
 
-    h1 {
-      color: #ff4d6d;
-      font-size: 2.4rem;
-      margin-bottom: 10px;
-    }
+.card {
+  background: white;
+  width: 100%;
+  max-width: 650px;
+  margin: 20px;
+  padding: 30px;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+  animation: fadeIn 1.5s ease;
+}
 
-    h2 {
-      font-weight: normal;
-      font-size: 1.2rem;
-      margin-bottom: 25px;
-    }
+h1 {
+  color: #ff4d6d;
+  margin-bottom: 10px;
+}
 
-    p {
-      font-size: 1.05rem;
-      line-height: 1.7;
-      margin-bottom: 15px;
-    }
+.day {
+  display: none;
+}
 
-    .heart {
-      font-size: 3rem;
-      animation: beat 1.5s infinite;
-      margin: 20px 0;
-    }
+.day.active {
+  display: block;
+}
 
-    .footer {
-      margin-top: 25px;
-      font-size: 0.95rem;
-      color: #666;
-    }
+button {
+  background: #ff4d6d;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-top: 15px;
+}
 
-    @keyframes beat {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.2); }
-    }
+button:hover {
+  background: #e63956;
+}
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+.secret {
+  display: none;
+  margin-top: 15px;
+  font-size: 1.1rem;
+  color: #444;
+}
 
-    /* 📱 Extra polish for small screens */
-    @media (max-width: 480px) {
-      h1 {
-        font-size: 2rem;
-      }
-      p {
-        font-size: 1rem;
-      }
-    }
-  </style>
+.music-btn {
+  margin-bottom: 15px;
+  background: #ff85a2;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+</style>
 </head>
 
 <body>
-  <div class="card">
-    <h1>Hey Himashree ❤️</h1>
-    <h2>This little page is just for you</h2>
 
-    <p>
-      I don’t know the perfect words, but I know the feeling — and that feeling is you.
-      You make my ordinary days special, my smiles real, and my heart feel at home.
-    </p>
+<!-- Background Music -->
+<audio id="music" loop>
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+</audio>
 
-    <p>
-      Every time I talk to you, see you, or even think about you, I’m reminded how lucky
-      I am to have someone so kind, beautiful, and amazing in my life.
-    </p>
+<div class="card">
+  <button class="music-btn" onclick="playMusic()">🎵 Tap to Play Music</button>
 
-    <p>
-      Thank you for being you — for your care, your laughter, and for standing by me.
-      No matter where life takes us, you’ll always have a special place in my heart.
-    </p>
+  <h1>Valentine Week 💖</h1>
 
-    <div class="heart">💖</div>
+  <!-- DAY 1 -->
+  <div class="day active">
+    <h2>🌹 Rose Day</h2>
+    <p>Just like this rose, my feelings for you are pure and beautiful.</p>
+  </div>
 
-    <p>
-      This is just a small surprise, but my feelings for you are endless.
-    </p>
+  <!-- DAY 2 -->
+  <div class="day">
+    <h2>💍 Propose Day</h2>
+    <p>If I had to choose again, I’d still choose you every single time.</p>
+  </div>
 
-    <div class="footer">
-      Made with love, just for you 🌹<br />
-      — Banajit
+  <!-- DAY 3 -->
+  <div class="day">
+    <h2>🍫 Chocolate Day</h2>
+    <p>Life feels sweeter with you in it.</p>
+  </div>
+
+  <!-- DAY 4 -->
+  <div class="day">
+    <h2>🧸 Teddy Day</h2>
+    <p>I wish I could hug you right now.</p>
+  </div>
+
+  <!-- DAY 5 -->
+  <div class="day">
+    <h2>🤞 Promise Day</h2>
+    <p>I promise to stand by you, always.</p>
+  </div>
+
+  <!-- DAY 6 -->
+  <div class="day">
+    <h2>🤗 Hug Day</h2>
+    <p>This hug is invisible, but my feelings are real.</p>
+  </div>
+
+  <!-- DAY 7 -->
+  <div class="day">
+    <h2>💋 Kiss Day</h2>
+    <p>A kiss to seal all my love for you.</p>
+  </div>
+
+  <!-- FINAL -->
+  <div class="day">
+    <h2>❤️ Valentine’s Day</h2>
+    <p>You are my today, my tomorrow, my always.</p>
+
+    <button onclick="reveal()">🔐 Reveal My Secret</button>
+    <div class="secret" id="secret">
+      Himashree, I love you more than words can ever say.  
+      — Banajit 💖
     </div>
   </div>
+
+  <button onclick="nextDay()">Next ➜</button>
+</div>
+
+<script>
+let current = 0;
+const days = document.querySelectorAll('.day');
+
+function nextDay() {
+  days[current].classList.remove('active');
+  current = (current + 1) % days.length;
+  days[current].classList.add('active');
+}
+
+function playMusic() {
+  document.getElementById('music').play();
+}
+
+function reveal() {
+  document.getElementById('secret').style.display = 'block';
+}
+
+/* Floating hearts */
+setInterval(() => {
+  const heart = document.createElement('div');
+  heart.className = 'heart-float';
+  heart.innerHTML = '💖';
+  heart.style.left = Math.random() * 100 + 'vw';
+  heart.style.fontSize = (20 + Math.random() * 20) + 'px';
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 6000);
+}, 500);
+</script>
+
 </body>
 </html>
