@@ -5,68 +5,108 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Valentine Week ❤️</title>
 
+<!-- Handwritten font -->
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;600&display=swap" rel="stylesheet">
+
 <style>
+/* ===== Base ===== */
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow-x: hidden;
+  transition: background 1s ease;
 }
 
 .card {
-  background: white;
-  width: 100%;
   max-width: 650px;
-  margin: 20px;
-  padding: 30px;
-  border-radius: 20px;
+  width: 92%;
+  margin: 16px;
+  padding: 32px 26px;
+  border-radius: 22px;
   text-align: center;
   box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+  position: relative;
+  overflow: hidden;
 }
 
-h1 {
-  color: #ff4d6d;
+/* emoji watermark */
+.card::before {
+  content: attr(data-bg);
+  position: absolute;
+  inset: 0;
+  font-size: 4rem;
+  opacity: 0.07;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
 }
+
+/* ===== Text ===== */
+h1 { margin-top: 0; }
 
 .day {
   display: none;
+  opacity: 0;
+  transition: opacity 1.2s ease;
 }
 
-.day.active {
-  display: block;
+.day.active { display: block; }
+.day.revealed { opacity: 1; }
+
+.message {
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.4rem;
+  margin-top: 15px;
+  min-height: 80px;
 }
 
-.locked {
-  opacity: 0.6;
+.lyric {
+  font-style: italic;
+  margin-top: 15px;
+  opacity: 0;
+  animation: reveal 3s forwards;
 }
 
-button {
+@keyframes reveal {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== Start Button ===== */
+.start-box { margin-top: 25px; }
+
+.start-btn {
   background: #ff4d6d;
   border: none;
   color: white;
-  padding: 10px 22px;
-  border-radius: 25px;
+  padding: 14px 30px;
+  border-radius: 30px;
+  font-size: 1.1rem;
   cursor: pointer;
-  font-size: 1rem;
-  margin-top: 20px;
 }
 
-button:disabled {
-  background: #ccc;
-  cursor: not-allowed;
-}
-
+/* ===== Secret ===== */
 .secret {
   display: none;
-  margin-top: 15px;
-  font-size: 1.1rem;
+  margin-top: 18px;
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.5rem;
 }
 
-.heart-float {
+/* ===== Countdown ===== */
+.countdown {
+  margin-top: 18px;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+/* ===== Floating Emojis ===== */
+.float {
   position: fixed;
   bottom: -20px;
   animation: floatUp 6s linear infinite;
@@ -77,150 +117,165 @@ button:disabled {
   from { transform: translateY(0); }
   to { transform: translateY(-110vh); opacity: 0; }
 }
+
+/* ===== Themes ===== */
+body.rose { background: linear-gradient(135deg,#ff9a9e,#fad0c4); }
+body.propose { background: linear-gradient(135deg,#a18cd1,#fbc2eb); }
+body.chocolate { background: linear-gradient(135deg,#836953,#f3e9dc); }
+body.teddy { background: linear-gradient(135deg,#ffdde1,#ee9ca7); }
+body.promise { background: linear-gradient(135deg,#89f7fe,#66a6ff); }
+body.hug { background: linear-gradient(135deg,#fddb92,#d1fdff); }
+body.kiss { background: linear-gradient(135deg,#ff0844,#2c0000); }
+body.valentine { background: linear-gradient(135deg,#f857a6,#ff5858); }
+
+.card.rose { background:#fff5f6; }
+.card.propose { background:#f7f3ff; }
+.card.chocolate { background:#f5eee6; }
+.card.teddy { background:#fff0f3; }
+.card.promise { background:#f0f7ff; }
+.card.hug { background:#fff9e6; }
+.card.kiss { background:#2c0000; color:white; }
+.card.valentine { background:#fff0f6; }
 </style>
 </head>
 
 <body>
 
-<!-- Romantic background music -->
-<audio id="music" autoplay muted loop>
-  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" type="audio/mpeg">
-</audio>
+<audio id="music" autoplay muted loop></audio>
 
-<div class="card" onclick="unmuteMusic()">
-  <h1>Valentine Week 💖</h1>
+<div class="card" id="card">
+<h1>Valentine Week 💖</h1>
 
-  <!-- Day 1 -->
-  <div class="day" data-day="0">
-    <h2>🌹 Rose Day</h2>
-    <p>
-      Just like a rose, my feelings for you are soft, deep, and full of love.
-      Every petal reminds me of your smile.
-    </p>
+<div class="day">
+  <h2>🌹 Rose Day</h2>
+  <div class="message" data-text="Just like a rose, my feelings bloom quietly for you."></div>
+  <div class="lyric">“This night is sparkling, don’t you let it go.”</div>
+</div>
+
+<div class="day">
+  <h2>💍 Propose Day</h2>
+  <div class="message" data-text="My heart chose you — and it keeps choosing you."></div>
+  <div class="lyric">“Can I go where you go?”</div>
+</div>
+
+<div class="day">
+  <h2>🍫 Chocolate Day</h2>
+  <div class="message" data-text="You make life sweeter just by being in it."></div>
+  <div class="lyric">“Sweet nothing.”</div>
+</div>
+
+<div class="day">
+  <h2>🧸 Teddy Day</h2>
+  <div class="message" data-text="If I could, I’d hold you forever."></div>
+  <div class="lyric">“You can hear it in the silence.”</div>
+</div>
+
+<div class="day">
+  <h2>🤞 Promise Day</h2>
+  <div class="message" data-text="I promise to stand with you, always."></div>
+  <div class="lyric">“It’s golden.”</div>
+</div>
+
+<div class="day">
+  <h2>🤗 Hug Day</h2>
+  <div class="message" data-text="This hug carries all my warmth to you."></div>
+  <div class="lyric">“I’m laughing with my lover.”</div>
+</div>
+
+<div class="day">
+  <h2>💋 Kiss Day</h2>
+  <div class="message" data-text="A kiss that says everything words can’t."></div>
+  <div class="lyric">“Everything just stops.”</div>
+</div>
+
+<div class="day">
+  <h2>❤️ Valentine’s Day</h2>
+  <div class="message" data-text="You are my forever."></div>
+  <div class="lyric">“Baby just say yes.”</div>
+
+  <button onclick="reveal()">🔐 Reveal My Secret</button>
+  <div class="secret" id="secret">
+    Himashree, loving you is the best thing my heart has ever done.<br>
+    — Banajit 💖
   </div>
+</div>
 
-  <!-- Day 2 -->
-  <div class="day" data-day="1">
-    <h2>💍 Propose Day</h2>
-    <p>
-      I don’t need fancy words — my heart chose you quietly,
-      and it keeps choosing you every single day.
-    </p>
-  </div>
+<div class="start-box">
+  <button class="start-btn" onclick="startExperience()">
+    💖 Open my words for you 💖
+  </button>
+</div>
 
-  <!-- Day 3 -->
-  <div class="day" data-day="2">
-    <h2>🍫 Chocolate Day</h2>
-    <p>
-      Life with you feels sweeter than any chocolate.
-      You are my favorite addiction.
-    </p>
-  </div>
-
-  <!-- Day 4 -->
-  <div class="day" data-day="3">
-    <h2>🧸 Teddy Day</h2>
-    <p>
-      When I miss you, I wish I could hold you tight
-      and forget the rest of the world.
-    </p>
-  </div>
-
-  <!-- Day 5 -->
-  <div class="day" data-day="4">
-    <h2>🤞 Promise Day</h2>
-    <p>
-      I promise to respect you, care for you,
-      and stand beside you — always.
-    </p>
-  </div>
-
-  <!-- Day 6 -->
-  <div class="day" data-day="5">
-    <h2>🤗 Hug Day</h2>
-    <p>
-      This hug crosses distance and time,
-      carrying all my warmth to you.
-    </p>
-  </div>
-
-  <!-- Day 7 -->
-  <div class="day" data-day="6">
-    <h2>💋 Kiss Day</h2>
-    <p>
-      A kiss may last a moment,
-      but my love for you is endless.
-    </p>
-  </div>
-
-  <!-- Valentine’s Day -->
-  <div class="day" data-day="7">
-    <h2>❤️ Valentine’s Day</h2>
-    <p>
-      You are my favorite story,
-      my safest place, my forever.
-    </p>
-
-    <button onclick="reveal()">🔐 Reveal My Secret</button>
-    <div class="secret" id="secret">
-      Himashree, loving you is the best thing my heart has ever done.  
-      — Banajit 💖
-    </div>
-  </div>
-
-  <button id="nextBtn" onclick="nextDay()">Next ➜</button>
+<div class="countdown" id="countdown"></div>
 </div>
 
 <script>
-const days = document.querySelectorAll('.day');
-let current = 0;
+const days = document.querySelectorAll(".day");
+const card = document.getElementById("card");
+const music = document.getElementById("music");
 
-/* Set Valentine week start date (Rose Day) */
-const startDate = new Date('2026-02-07T00:00:00'); // adjust year if needed
-const today = new Date();
-const diffDays = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
+const songs = ["rose.mp3","propose.mp3","chocolate.mp3","teddy.mp3","promise.mp3","hug.mp3","kiss.mp3","valentine.mp3"];
+const themes = ["rose","propose","chocolate","teddy","promise","hug","kiss","valentine"];
+const emojis = ["🌹","💍","🍫","🧸","🤞","🤗","💋","❤️"];
 
-function updateDay() {
-  current = Math.max(0, Math.min(diffDays, days.length - 1));
-  days.forEach((d, i) => d.classList.toggle('active', i === current));
+const startDate = new Date("2026-02-07T00:00:00");
+const diff = Math.floor((new Date()-startDate)/(1000*60*60*24));
+const index = Math.max(0,Math.min(diff,days.length-1));
 
-  if (diffDays < days.length - 1) {
-    document.getElementById('nextBtn').disabled = true;
-    document.getElementById('nextBtn').innerText = "🔐 Unlocks at 12:00 AM";
-  }
+days[index].classList.add("active");
+document.body.classList.add(themes[index]);
+card.classList.add(themes[index]);
+card.setAttribute("data-bg",emojis[index]);
+music.src = songs[index];
+
+function typeText(el){
+  const text = el.dataset.text;
+  let i=0;
+  const timer=setInterval(()=>{
+    el.textContent+=text[i];
+    i++;
+    if(i>=text.length) clearInterval(timer);
+  },60);
 }
 
-function nextDay() {
-  if (current < days.length - 1) {
-    days[current].classList.remove('active');
-    current++;
-    days[current].classList.add('active');
-  }
-}
+function startExperience(){
+  days[index].classList.add("revealed");
+  document.querySelectorAll(".message").forEach(typeText);
 
-function reveal() {
-  document.getElementById('secret').style.display = 'block';
-}
-
-/* Mobile autoplay fix */
-function unmuteMusic() {
-  const music = document.getElementById('music');
-  music.muted = false;
+  music.muted=false;
   music.play();
+  let v=0;
+  const fade=setInterval(()=>{
+    if(v<1){ v+=0.02; music.volume=v; }
+    else clearInterval(fade);
+  },100);
+
+  document.querySelector(".start-box").style.display="none";
 }
 
-/* Floating hearts */
-setInterval(() => {
-  const h = document.createElement('div');
-  h.className = 'heart-float';
-  h.innerHTML = '💖';
-  h.style.left = Math.random() * 100 + 'vw';
-  h.style.fontSize = (20 + Math.random() * 20) + 'px';
-  document.body.appendChild(h);
-  setTimeout(() => h.remove(), 6000);
-}, 500);
+function reveal(){
+  document.getElementById("secret").style.display="block";
+}
 
-updateDay();
+/* Countdown */
+function updateCountdown(){
+  const m=new Date(); m.setHours(24,0,0,0);
+  const d=m-new Date();
+  document.getElementById("countdown").innerText=
+   `Next surprise unlocks in ${Math.floor(d/3600000)}h ${Math.floor(d/60000)%60}m ${Math.floor(d/1000)%60}s 💫`;
+}
+setInterval(updateCountdown,1000); updateCountdown();
+
+/* Floating emojis */
+setInterval(()=>{
+  const f=document.createElement("div");
+  f.className="float";
+  f.innerHTML=emojis[index];
+  f.style.left=Math.random()*100+"vw";
+  f.style.fontSize=(18+Math.random()*22)+"px";
+  document.body.appendChild(f);
+  setTimeout(()=>f.remove(),6000);
+},600);
 </script>
 
 </body>
