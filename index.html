@@ -3,280 +3,421 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Valentine Week ❤️</title>
+<title>Valentine Week for Himashree ❤️</title>
 
-<!-- Handwritten font -->
-<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
-/* ===== Base ===== */
+/* ===== Base & Theme ===== */
+:root {
+  --primary: #ff4d6d;
+  --bg-color: #ffe8ec;
+}
+
 body {
   margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  min-height: 100vh;
+  font-family: 'Poppins', sans-serif;
+  min-height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow-x: hidden;
+  background: var(--bg-color);
   transition: background 1s ease;
 }
 
-.card {
-  max-width: 650px;
-  width: 92%;
-  margin: 16px;
-  padding: 32px 26px;
-  border-radius: 22px;
-  text-align: center;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-  position: relative;
-  overflow: hidden;
-}
-
-/* emoji watermark */
-.card::before {
-  content: attr(data-bg);
+/* Dynamic Background Animation */
+body::before {
+  content: "";
   position: absolute;
   inset: 0;
-  font-size: 4rem;
-  opacity: 0.07;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background-image: radial-gradient(rgba(255,255,255,0.3) 2px, transparent 2px);
+  background-size: 30px 30px;
   pointer-events: none;
 }
 
-/* ===== Text ===== */
-h1 { margin-top: 0; }
-
-.day {
-  display: none;
-  opacity: 0;
-  transition: opacity 1.2s ease;
+.card {
+  max-width: 380px;
+  width: 90%;
+  margin: 20px auto;
+  padding: 30px 25px;
+  border-radius: 30px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 20px 60px rgba(255, 77, 109, 0.2);
+  position: relative;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.8);
 }
 
-.day.active { display: block; }
-.day.revealed { opacity: 1; }
+/* Titles */
+h1 { margin: 0; font-family: 'Dancing Script', cursive; color: var(--primary); font-size: 2.5rem; }
+h2 { margin: 10px 0 15px; font-size: 1.4rem; color: #444; }
 
+/* Photo Frame with Fallback Logic */
+.photo-frame {
+  width: 100%;
+  aspect-ratio: 1/1; /* Keeps it square */
+  border-radius: 20px;
+  overflow: hidden;
+  margin: 15px 0;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  background: #fff0f5;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.photo-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  z-index: 2;
+  position: relative;
+  /* If image fails to load, hide it so fallback shows */
+  background: #fff0f5;
+  transition: transform 0.5s ease;
+}
+
+.photo-frame:hover img { transform: scale(1.05); }
+
+/* Fallback Emoji (shows if image is missing) */
+.photo-frame::after {
+  content: attr(data-emoji);
+  position: absolute;
+  font-size: 5rem;
+  z-index: 1;
+  opacity: 0.5;
+}
+
+/* Messages */
 .message {
   font-family: 'Dancing Script', cursive;
-  font-size: 1.4rem;
-  margin-top: 15px;
-  min-height: 80px;
+  font-size: 1.5rem;
+  min-height: 70px;
+  margin: 15px 0;
+  color: #d63384;
+  line-height: 1.3;
 }
 
 .lyric {
+  font-size: 0.85rem;
+  color: #777;
   font-style: italic;
-  margin-top: 15px;
+  margin-top: 5px;
   opacity: 0;
-  animation: reveal 3s forwards;
+  transform: translateY(10px);
+  transition: all 0.8s ease 0.3s;
 }
 
-@keyframes reveal {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+.day.active .lyric { opacity: 1; transform: translateY(0); }
+
+/* Navigation */
+.nav-box {
+  display: flex;
+  gap: 15px;
+  margin-top: 25px;
 }
 
-/* ===== Start Button ===== */
-.start-box { margin-top: 25px; }
-
-.start-btn {
-  background: #ff4d6d;
+.nav-btn {
+  flex: 1;
+  padding: 12px;
+  border-radius: 50px;
   border: none;
-  color: white;
-  padding: 14px 30px;
-  border-radius: 30px;
-  font-size: 1.1rem;
+  background: #fff;
+  color: var(--primary);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  font-weight: 600;
   cursor: pointer;
+  transition: 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
 }
 
-/* ===== Secret ===== */
-.secret {
-  display: none;
-  margin-top: 18px;
+.nav-btn:hover { background: var(--primary); color: white; transform: translateY(-2px); }
+.nav-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; background: #eee; color: #999; }
+
+/* Scratch Card */
+.scratch-container {
+  position: relative;
+  width: 100%;
+  height: 100px;
+  margin: 15px auto;
+  border-radius: 15px;
+  overflow: hidden;
+  display: none; /* Hidden until Day 8 */
+}
+
+.secret-text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff0f6;
+  color: #d63384;
   font-family: 'Dancing Script', cursive;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
+  text-align: center;
+  padding: 10px;
 }
 
-/* ===== Countdown ===== */
-.countdown {
-  margin-top: 18px;
-  font-size: 0.9rem;
-  opacity: 0.8;
-}
+canvas { position: absolute; top: 0; left: 0; cursor: crosshair; touch-action: none; }
 
-/* ===== Floating Emojis ===== */
-.float {
+/* Music Button */
+.music-btn {
   position: fixed;
-  bottom: -20px;
-  animation: floatUp 6s linear infinite;
-  opacity: 0.7;
+  top: 20px; right: 20px;
+  width: 45px; height: 45px;
+  border-radius: 50%;
+  background: white;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+  cursor: pointer;
+  z-index: 100;
+  font-size: 1.2rem;
+  animation: spin 4s linear infinite;
+  animation-play-state: paused;
 }
+.music-btn.playing { animation-play-state: running; color: var(--primary); }
+@keyframes spin { 100% { transform: rotate(360deg); } }
 
-@keyframes floatUp {
-  from { transform: translateY(0); }
-  to { transform: translateY(-110vh); opacity: 0; }
-}
+/* Floating Hearts */
+.float { position: fixed; bottom: -50px; font-size: 20px; animation: floatUp linear forwards; pointer-events: none; z-index: 0; }
+@keyframes floatUp { to { transform: translateY(-110vh) rotate(360deg); opacity: 0; } }
 
-/* ===== Themes ===== */
-body.rose { background: linear-gradient(135deg,#ff9a9e,#fad0c4); }
-body.propose { background: linear-gradient(135deg,#a18cd1,#fbc2eb); }
-body.chocolate { background: linear-gradient(135deg,#836953,#f3e9dc); }
-body.teddy { background: linear-gradient(135deg,#ffdde1,#ee9ca7); }
-body.promise { background: linear-gradient(135deg,#89f7fe,#66a6ff); }
-body.hug { background: linear-gradient(135deg,#fddb92,#d1fdff); }
-body.kiss { background: linear-gradient(135deg,#ff0844,#2c0000); }
-body.valentine { background: linear-gradient(135deg,#f857a6,#ff5858); }
+/* Slide Animation */
+.day { display: none; }
+.day.active { display: block; animation: slideIn 0.5s ease; }
+@keyframes slideIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
 
-.card.rose { background:#fff5f6; }
-.card.propose { background:#f7f3ff; }
-.card.chocolate { background:#f5eee6; }
-.card.teddy { background:#fff0f3; }
-.card.promise { background:#f0f7ff; }
-.card.hug { background:#fff9e6; }
-.card.kiss { background:#2c0000; color:white; }
-.card.valentine { background:#fff0f6; }
 </style>
 </head>
-
 <body>
 
-<audio id="music" autoplay muted loop></audio>
+<audio id="music" loop></audio>
+<div class="music-btn" onclick="toggleMusic()" id="musicBtn">🎵</div>
 
-<div class="card" id="card">
-<h1>Valentine Week 💖</h1>
-
-<div class="day">
-  <h2>🌹 Rose Day</h2>
-  <div class="message" data-text="Just like a rose, my feelings bloom quietly for you."></div>
-  <div class="lyric">“This night is sparkling, don’t you let it go.”</div>
-</div>
-
-<div class="day">
-  <h2>💍 Propose Day</h2>
-  <div class="message" data-text="My heart chose you — and it keeps choosing you."></div>
-  <div class="lyric">“Can I go where you go?”</div>
-</div>
-
-<div class="day">
-  <h2>🍫 Chocolate Day</h2>
-  <div class="message" data-text="You make life sweeter just by being in it."></div>
-  <div class="lyric">“Sweet nothing.”</div>
-</div>
-
-<div class="day">
-  <h2>🧸 Teddy Day</h2>
-  <div class="message" data-text="If I could, I’d hold you forever."></div>
-  <div class="lyric">“You can hear it in the silence.”</div>
-</div>
-
-<div class="day">
-  <h2>🤞 Promise Day</h2>
-  <div class="message" data-text="I promise to stand with you, always."></div>
-  <div class="lyric">“It’s golden.”</div>
-</div>
-
-<div class="day">
-  <h2>🤗 Hug Day</h2>
-  <div class="message" data-text="This hug carries all my warmth to you."></div>
-  <div class="lyric">“I’m laughing with my lover.”</div>
-</div>
-
-<div class="day">
-  <h2>💋 Kiss Day</h2>
-  <div class="message" data-text="A kiss that says everything words can’t."></div>
-  <div class="lyric">“Everything just stops.”</div>
-</div>
-
-<div class="day">
-  <h2>❤️ Valentine’s Day</h2>
-  <div class="message" data-text="You are my forever."></div>
-  <div class="lyric">“Baby just say yes.”</div>
-
-  <button onclick="reveal()">🔐 Reveal My Secret</button>
-  <div class="secret" id="secret">
-    Himashree, loving you is the best thing my heart has ever done.<br>
-    — Banajit 💖
+<div class="card">
+  <div id="startScreen" style="position:absolute; inset:0; background:rgba(255,255,255,0.98); z-index:10; display:flex; flex-direction:column; align-items:center; justify-content:center; border-radius:30px;">
+    <h1>Valentine Week</h1>
+    <p style="color:#666; margin-bottom:20px;">A surprise for Himashree 💖</p>
+    <button class="nav-btn" style="background:var(--primary); color:white; padding:15px 40px;" onclick="start()">Tap to Open</button>
   </div>
-</div>
 
-<div class="start-box">
-  <button class="start-btn" onclick="startExperience()">
-    💖 Open my words for you 💖
-  </button>
-</div>
+  <div id="content">
+    <h1 id="header">Valentine Week</h1>
 
-<div class="countdown" id="countdown"></div>
+    <div class="day">
+      <h2>🌹 Rose Day</h2>
+      <div class="photo-frame" data-emoji="🌹">
+        <img src="rose.jpg" onerror="this.style.display='none'">
+      </div>
+      <div class="message" data-text="Like a rose, my love for you blooms quietly."></div>
+      <div class="lyric">“This night is sparkling.”</div>
+    </div>
+
+    <div class="day">
+      <h2>💍 Propose Day</h2>
+      <div class="photo-frame" data-emoji="💍">
+        <img src="propose.jpg" onerror="this.style.display='none'">
+      </div>
+      <div class="message" data-text="My heart chooses you, today and always."></div>
+      <div class="lyric">“Can I go where you go?”</div>
+    </div>
+
+    <div class="day">
+      <h2>🍫 Chocolate Day</h2>
+      <div class="photo-frame" data-emoji="🍫">
+        <img src="chocolate.jpg" onerror="this.style.display='none'">
+      </div>
+      <div class="message" data-text="You are sweeter than any chocolate."></div>
+      <div class="lyric">“Sweet nothing.”</div>
+    </div>
+
+    <div class="day">
+      <h2>🧸 Teddy Day</h2>
+      <div class="photo-frame" data-emoji="🧸">
+        <img src="teddy.jpg" onerror="this.style.display='none'">
+      </div>
+      <div class="message" data-text="Sending you the warmest bear hug."></div>
+      <div class="lyric">“In the silence.”</div>
+    </div>
+
+    <div class="day">
+      <h2>🤞 Promise Day</h2>
+      <div class="photo-frame" data-emoji="🤞">
+        <img src="promise.jpg" onerror="this.style.display='none'">
+      </div>
+      <div class="message" data-text="I promise to be your side, forever."></div>
+      <div class="lyric">“It’s golden.”</div>
+    </div>
+
+    <div class="day">
+      <h2>🤗 Hug Day</h2>
+      <div class="photo-frame" data-emoji="🤗">
+        <img src="hug.jpg" onerror="this.style.display='none'">
+      </div>
+      <div class="message" data-text="My favorite place is in your hug."></div>
+      <div class="lyric">“Laughing with my lover.”</div>
+    </div>
+
+    <div class="day">
+      <h2>💋 Kiss Day</h2>
+      <div class="photo-frame" data-emoji="💋">
+        <img src="kiss.jpg" onerror="this.style.display='none'">
+      </div>
+      <div class="message" data-text="One kiss to say everything."></div>
+      <div class="lyric">“Everything just stops.”</div>
+    </div>
+
+    <div class="day">
+      <h2>❤️ Valentine’s Day</h2>
+      <div class="photo-frame" data-emoji="💑">
+        <img src="valentine.jpg" onerror="this.style.display='none'">
+      </div>
+      <div class="message" data-text="Himashree, you are my everything."></div>
+      <div class="lyric">“Baby just say yes.”</div>
+
+      <p style="font-size:0.8rem; margin-top:10px; color:#888;">✨ Scratch below ✨</p>
+      <div class="scratch-container" id="scratchCard">
+        <div class="secret-text">I Love You! 💖<br>- Banajit</div>
+        <canvas id="scratchCanvas"></canvas>
+      </div>
+    </div>
+
+    <div class="nav-box">
+      <button class="nav-btn" id="prev" onclick="move(-1)">⬅️ Prev</button>
+      <button class="nav-btn" id="next" onclick="move(1)">Next ➡️</button>
+    </div>
+    <div id="timer" style="margin-top:15px; font-size:0.8rem; color:#888;"></div>
+  </div>
 </div>
 
 <script>
 const days = document.querySelectorAll(".day");
-const card = document.getElementById("card");
 const music = document.getElementById("music");
-
 const songs = ["rose.mp3","propose.mp3","chocolate.mp3","teddy.mp3","promise.mp3","hug.mp3","kiss.mp3","valentine.mp3"];
-const themes = ["rose","propose","chocolate","teddy","promise","hug","kiss","valentine"];
-const emojis = ["🌹","💍","🍫","🧸","🤞","🤗","💋","❤️"];
+const themes = ["#ffe8ec","#f3e5f5","#efebe9","#ffebee","#e3f2fd","#fff3e0","#ffebee","#ffe8ec"];
 
+// Set Date Logic (Feb 7 Start)
 const startDate = new Date("2026-02-07T00:00:00");
-const diff = Math.floor((new Date()-startDate)/(1000*60*60*24));
-const index = Math.max(0,Math.min(diff,days.length-1));
+const today = new Date();
+const diff = Math.floor((today - startDate) / (1000*60*60*24));
 
-days[index].classList.add("active");
-document.body.classList.add(themes[index]);
-card.classList.add(themes[index]);
-card.setAttribute("data-bg",emojis[index]);
-music.src = songs[index];
+// ⚠️ Remove '7' and use 'diff' for real logic
+// let maxUnlock = Math.max(0, Math.min(diff, 7));
+let maxUnlock = 7; // Unlocked for testing
 
-function typeText(el){
-  const text = el.dataset.text;
+let current = maxUnlock;
+
+function start() {
+  document.getElementById("startScreen").style.display = "none";
+  loadDay(current);
+  toggleMusic();
+}
+
+function loadDay(index) {
+  days.forEach(d => d.classList.remove("active"));
+  days[index].classList.add("active");
+  document.body.style.background = themes[index];
+
+  // Typewriter
+  const msg = days[index].querySelector(".message");
+  const txt = msg.dataset.text;
+  msg.textContent = "";
   let i=0;
-  const timer=setInterval(()=>{
-    el.textContent+=text[i];
-    i++;
-    if(i>=text.length) clearInterval(timer);
-  },60);
+  if(window.t) clearInterval(window.t);
+  window.t = setInterval(() => {
+    if(i<txt.length) msg.textContent += txt[i++];
+    else clearInterval(window.t);
+  }, 50);
+
+  // Buttons
+  document.getElementById("prev").disabled = index === 0;
+  document.getElementById("next").disabled = index >= maxUnlock;
+
+  // Music Swap
+  if(!music.src.includes(songs[index])) {
+    music.src = songs[index];
+    if(!music.paused) music.play();
+  }
+
+  // Init Scratch if Day 8
+  if(index === 7) setTimeout(initScratch, 100);
 }
 
-function startExperience(){
-  days[index].classList.add("revealed");
-  document.querySelectorAll(".message").forEach(typeText);
-
-  music.muted=false;
-  music.play();
-  let v=0;
-  const fade=setInterval(()=>{
-    if(v<1){ v+=0.02; music.volume=v; }
-    else clearInterval(fade);
-  },100);
-
-  document.querySelector(".start-box").style.display="none";
+function move(dir) {
+  if (current+dir >= 0 && current+dir <= maxUnlock) {
+    current += dir;
+    loadDay(current);
+  }
 }
 
-function reveal(){
-  document.getElementById("secret").style.display="block";
+function toggleMusic() {
+  const btn = document.getElementById("musicBtn");
+  if(music.paused) { music.play(); btn.classList.add("playing"); }
+  else { music.pause(); btn.classList.remove("playing"); }
 }
 
-/* Countdown */
-function updateCountdown(){
-  const m=new Date(); m.setHours(24,0,0,0);
-  const d=m-new Date();
-  document.getElementById("countdown").innerText=
-   `Next surprise unlocks in ${Math.floor(d/3600000)}h ${Math.floor(d/60000)%60}m ${Math.floor(d/1000)%60}s 💫`;
-}
-setInterval(updateCountdown,1000); updateCountdown();
+function initScratch() {
+  const c = document.getElementById("scratchCanvas");
+  const card = document.getElementById("scratchCard");
+  if(c.width > 0) return; // already init
 
-/* Floating emojis */
-setInterval(()=>{
-  const f=document.createElement("div");
-  f.className="float";
-  f.innerHTML=emojis[index];
-  f.style.left=Math.random()*100+"vw";
-  f.style.fontSize=(18+Math.random()*22)+"px";
-  document.body.appendChild(f);
-  setTimeout(()=>f.remove(),6000);
-},600);
+  card.style.display = "block";
+  c.width = card.offsetWidth;
+  c.height = card.offsetHeight;
+  const ctx = c.getContext("2d");
+
+  ctx.fillStyle = "#ccc";
+  ctx.fillRect(0,0,c.width,c.height);
+  ctx.fillStyle = "#666";
+  ctx.font = "20px Arial";
+  ctx.fillText("Scratch Me", c.width/2 - 50, c.height/2 + 8);
+
+  let draw = false;
+  const getPos = (e) => {
+    const r = c.getBoundingClientRect();
+    return {
+      x: (e.touches ? e.touches[0].clientX : e.clientX) - r.left,
+      y: (e.touches ? e.touches[0].clientY : e.clientY) - r.top
+    };
+  };
+
+  const scratch = (e) => {
+    if(!draw) return;
+    e.preventDefault();
+    const {x,y} = getPos(e);
+    ctx.globalCompositeOperation = "destination-out";
+    ctx.beginPath();
+    ctx.arc(x,y,20,0,Math.PI*2);
+    ctx.fill();
+  };
+
+  c.addEventListener("mousedown", ()=>draw=true);
+  c.addEventListener("touchstart", ()=>draw=true);
+  window.addEventListener("mouseup", ()=>draw=false);
+  window.addEventListener("touchend", ()=>draw=false);
+  c.addEventListener("mousemove", scratch);
+  c.addEventListener("touchmove", scratch);
+}
+
+// Floating Hearts
+setInterval(() => {
+  const h = document.createElement("div");
+  h.className = "float";
+  h.innerHTML = ["❤️","🌹","💖"][Math.floor(Math.random()*3)];
+  h.style.left = Math.random()*100 + "vw";
+  h.style.animationDuration = (3+Math.random()*4) + "s";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(), 4000);
+}, 800);
+
 </script>
-
 </body>
 </html>
