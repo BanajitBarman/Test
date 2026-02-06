@@ -8,153 +8,64 @@
 <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
-:root{
- --bg1:#ff9a9e;
- --bg2:#fad0c4;
-}
-
+:root{--bg1:#ff9a9e;--bg2:#fad0c4;}
 body{
- margin:0;
- min-height:100vh;
- display:flex;
- justify-content:center;
- align-items:center;
+ margin:0;min-height:100vh;display:flex;justify-content:center;align-items:center;
  font-family:Poppins,sans-serif;
  background:linear-gradient(135deg,var(--bg1),var(--bg2));
- transition:1s;
  overflow:hidden;
 }
-
 .card{
- width:90%;
- max-width:420px;
- background:white;
- border-radius:28px;
- padding:25px;
- text-align:center;
- box-shadow:0 25px 60px rgba(0,0,0,.15);
+ width:90%;max-width:420px;background:white;border-radius:28px;padding:25px;
+ text-align:center;box-shadow:0 25px 60px rgba(0,0,0,.15);
 }
-
-h1{
- font-family:'Dancing Script',cursive;
- color:#ff4d6d;
- font-size:2.5rem;
-}
-
+h1{font-family:'Dancing Script',cursive;color:#ff4d6d;font-size:2.5rem;}
 h2{font-size:1.3rem;margin:10px 0;}
 
 .image-box{
- width:100%;
- height:260px;
- border-radius:20px;
- overflow:hidden;
- margin:15px 0;
- position:relative;
- cursor:pointer;
+ width:100%;height:260px;border-radius:20px;overflow:hidden;margin:15px 0;
+ position:relative;cursor:pointer;
 }
-
 .image-box img{
- width:100%;
- height:100%;
- object-fit:cover;
- filter:blur(12px);
- opacity:0;
- transition:1.2s ease;
+ width:100%;height:100%;object-fit:cover;
+ filter:blur(12px);opacity:0;transition:1.2s ease;
 }
-
-.image-box.revealed img{
- filter:blur(0);
- opacity:1;
-}
+.image-box.revealed img{filter:blur(0);opacity:1;}
 
 .tap-overlay{
- position:absolute;
- inset:0;
- background:rgba(255,255,255,.85);
- display:flex;
- align-items:center;
- justify-content:center;
- font-weight:600;
- color:#ff4d6d;
+ position:absolute;inset:0;background:rgba(255,255,255,.85);
+ display:flex;align-items:center;justify-content:center;
+ font-weight:600;color:#ff4d6d;
 }
-
 .image-box.revealed .tap-overlay{display:none;}
 
 .message{
- font-family:'Dancing Script',cursive;
- font-size:1.6rem;
- min-height:80px;
- color:#d63384;
+ font-family:'Dancing Script',cursive;font-size:1.6rem;
+ min-height:80px;color:#d63384;
 }
-
-.lyric{
- font-size:.85rem;
- color:#777;
- font-style:italic;
- opacity:0;
- transition:.8s;
-}
-
+.lyric{font-size:.85rem;color:#777;font-style:italic;opacity:0;transition:.8s;}
 .show .lyric{opacity:1;}
 
 button{
- width:100%;
- padding:12px;
- border-radius:30px;
- border:none;
- background:#ff4d6d;
- color:white;
- font-weight:600;
- margin-top:15px;
- cursor:pointer;
+ width:100%;padding:12px;border-radius:30px;border:none;
+ background:#ff4d6d;color:white;font-weight:600;margin-top:15px;cursor:pointer;
 }
-
-.nav{
- display:flex;
- gap:10px;
- margin-top:15px;
-}
+.nav{display:flex;gap:10px;margin-top:15px;}
 
 .music-btn{
- position:fixed;
- top:20px;
- right:20px;
- width:48px;
- height:48px;
- border-radius:50%;
- background:white;
- display:flex;
- align-items:center;
- justify-content:center;
- box-shadow:0 10px 25px rgba(0,0,0,.15);
- font-size:1.3rem;
- cursor:pointer;
+ position:fixed;top:20px;right:20px;width:48px;height:48px;
+ border-radius:50%;background:white;display:flex;align-items:center;justify-content:center;
+ box-shadow:0 10px 25px rgba(0,0,0,.15);font-size:1.3rem;cursor:pointer;
 }
 
-.music-btn.playing{animation:spin 4s linear infinite;}
-@keyframes spin{100%{transform:rotate(360deg);}}
-
-/* Letter */
 #letter{
- position:fixed;
- inset:0;
- background:rgba(255,240,245,.97);
- display:none;
- align-items:center;
- justify-content:center;
- z-index:100;
+ position:fixed;inset:0;background:rgba(255,240,245,.97);
+ display:none;align-items:center;justify-content:center;z-index:100;
 }
-
 #letter .box{
- background:white;
- padding:30px;
- border-radius:25px;
- max-width:420px;
- font-family:'Dancing Script',cursive;
- font-size:1.6rem;
- color:#d63384;
- text-align:center;
- box-shadow:0 20px 50px rgba(0,0,0,.2);
+ background:white;padding:30px;border-radius:25px;max-width:420px;
+ font-family:'Dancing Script',cursive;font-size:1.6rem;color:#d63384;
+ text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.2);
 }
 </style>
 </head>
@@ -168,7 +79,7 @@ button{
 <h1>Valentine Week</h1>
 <h2 id="title"></h2>
 
-<div class="image-box" onclick="reveal()" id="imgBox">
+<div class="image-box" id="imgBox" onclick="reveal()">
  <img id="img">
  <div class="tap-overlay" id="tap">Tap to unlock 💖</div>
 </div>
@@ -189,51 +100,70 @@ button{
 </div>
 
 <script>
+const titleEl = document.getElementById("title");
+const imgEl = document.getElementById("img");
+const msgEl = document.getElementById("msg");
+const lyricEl = document.getElementById("lyric");
+const tapEl = document.getElementById("tap");
+const imgBox = document.getElementById("imgBox");
+const letter = document.getElementById("letter");
+const letterText = document.getElementById("letterText");
+const music = document.getElementById("music");
+
 const startDate = new Date("2026-02-07T00:00:00");
 const today = new Date();
 
-const unlocked = Math.min(7, Math.floor((today-startDate)/(1000*60*60*24)));
+const diffDays = Math.floor((today - startDate)/(1000*60*60*24));
+const unlocked = Math.max(0, Math.min(7, diffDays));
 
-const days=[
-{t:"🌹 Rose Day",m:"Like a rose, my love blooms quietly for you.",l:"This night is sparkling.",img:"rose.jpg",song:"rose.mp3",letter:"এপাহ সতেজ গোলাপৰ দৰেই তোমাৰ উপস্থিতিয়ে মোৰ পৃথিৱীখন সুবাসিত কৰি ৰাখে। May our journey together continue to blossom in the most beautiful ways. Happy Rose Day!"},
-{t:"💍 Propose Day",m:"My heart chooses you — always.",l:"Can I go where you go?",img:"propose.jpg",song:"propose.mp3",letter:"Life is a collection of moments, but the best ones are the ones I spend with you. I’d choose you today, tomorrow, and every day that follows. Happy Propose Day!"},
-{t:"🍫 Chocolate Day",m:"You make life sweeter.",l:"Sweet nothing.",img:"chocolate.jpg",song:"chocolate.mp3",letter:"You are the sweetness I crave, today and always."},
-{t:"🧸 Teddy Day",m:"Sending you my warmest hug.",l:"In the silence.",img:"teddy.jpg",song:"teddy.mp3",letter:"I wish I could hold you right now and never let go."},
-{t:"🤞 Promise Day",m:"I promise to stand by you.",l:"It’s golden.",img:"promise.jpg",song:"promise.mp3",letter:"মই প্ৰতিশ্ৰুতি দিছোঁ যে সুখতে হওক বা দুখতে, জীৱনৰ প্ৰতিটো খোজত তোমাৰ হাতখন ধৰি মই সদায় কাষত থাকিম।"},
-{t:"🤗 Hug Day",m:"My favorite place is with you.",l:"Laughing with my lover.",img:"hug.jpg",song:"hug.mp3",letter:"There is a special kind of magic in your embrace that makes the whole world disappear. I’m sending you a giant squeeze today and counting down the moments until the next one. Happy Hug Day!"},
-{t:"💋 Kiss Day",m:"One kiss says it all.",l:"Everything just stops.",img:"kiss.jpg",song:"kiss.mp3",letter:"One kiss from you holds a thousand emotions."},
-{t:"❤️ Valentine’s Day",m:"You are my forever.",l:"Baby just say yes.",img:"valentine.jpg",song:"valentine.mp3",letter:"Himashree, you are my forever, my love, my home. — Banajit 💖"}
+const days = [
+ {t:"🌹 Rose Day",m:"Like a rose, my love blooms quietly for you.",l:"This night is sparkling.",img:"rose.jpg",song:"rose.mp3",letter:"Happy Rose Day 💐"},
+ {t:"💍 Propose Day",m:"My heart chooses you — always.",l:"Can I go where you go?",img:"propose.jpg",song:"propose.mp3",letter:"I choose you ❤️"},
+ {t:"🍫 Chocolate Day",m:"You make life sweeter.",l:"Sweet nothing.",img:"chocolate.jpg",song:"chocolate.mp3",letter:"Sweet like you 🍫"},
+ {t:"🧸 Teddy Day",m:"Sending you my warmest hug.",l:"In the silence.",img:"teddy.jpg",song:"teddy.mp3",letter:"A hug for you 🧸"},
+ {t:"🤞 Promise Day",m:"I promise to stand by you.",l:"It’s golden.",img:"promise.jpg",song:"promise.mp3",letter:"Always with you 🤞"},
+ {t:"🤗 Hug Day",m:"My favorite place is with you.",l:"Laughing with my lover.",img:"hug.jpg",song:"hug.mp3",letter:"Come here 🤗"},
+ {t:"💋 Kiss Day",m:"One kiss says it all.",l:"Everything just stops.",img:"kiss.jpg",song:"kiss.mp3",letter:"Just one kiss 💋"},
+ {t:"❤️ Valentine’s Day",m:"You are my forever.",l:"Baby just say yes.",img:"valentine.jpg",song:"valentine.mp3",letter:"Forever yours 💖 — Banajit"}
 ];
 
-let i=Math.min(unlocked,days.length-1);
-const music=document.getElementById("music");
+let i = Math.min(unlocked, days.length-1);
 
 function load(){
- const d=days[i];
- title.innerText=d.t;
- img.src=d.img;
- msg.innerText="";
- lyric.innerText=d.l;
- letterText.innerHTML=d.letter.replace(/\n/g,"<br>");
+ const d = days[i];
+ titleEl.innerText = d.t;
+ imgEl.src = d.img;
+ msgEl.innerText = "";
+ lyricEl.innerText = d.l;
+ letterText.innerHTML = d.letter;
  imgBox.classList.remove("revealed");
- tap.innerText = i>unlocked ? "Locked 🔒 Come back tomorrow" : "Tap to unlock 💖";
- music.src=d.song;
+ tapEl.innerText = i > unlocked ? "Locked 🔒 Come back tomorrow" : "Tap to unlock 💖";
+ music.src = d.song;
+ lyricEl.parentElement.classList.remove("show");
 }
 
 function reveal(){
- if(i>unlocked) return;
+ if(i > unlocked) return;
  imgBox.classList.add("revealed");
- type(days[i].m);
+ typeText(days[i].m);
  music.play();
- lyric.parentElement.classList.add("show");
+ lyricEl.parentElement.classList.add("show");
 }
 
-function type(t){
- let j=0; msg.innerText="";
- const s=setInterval(()=>{if(j<t.length)msg.innerText+=t[j++];else clearInterval(s)},45);
+function typeText(text){
+ let j=0; msgEl.innerText="";
+ const timer=setInterval(()=>{
+   if(j<text.length) msgEl.innerText+=text[j++];
+   else clearInterval(timer);
+ },45);
 }
 
-function move(d){i+=d;load();}
+function move(d){
+ const next=i+d;
+ if(next<0||next>=days.length) return;
+ i=next; load();
+}
+
 function toggleMusic(){music.paused?music.play():music.pause();}
 function openLetter(){letter.style.display="flex";}
 function closeLetter(){letter.style.display="none";}
